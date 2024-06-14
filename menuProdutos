@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct produto {
+    int numProd;
+    char nomeProduto[50];
+    float preco;
+    int qtdProduto;
+};
+
+struct produto p[100];
+int count = 0;
+
+void addProduto();
+void compraProduto();
+void menu();
+void init();
+void pausa();
+
+int main() {
+    init();
+    menu();
+    return 0;
+}
+
+void init() {
+    FILE *temp;
+    temp = fopen("produtos.fc", "a");
+    fclose(temp);
+}
+
+void menu() {
+    char opt;
+    do {
+        system("cls || clear");
+        printf("\n\t-------------------------------------------");
+        printf("\n\t--------------------MENU-------------------");
+        printf("\n\t º                                       º");
+        printf("\n\t º    [1] - ADICIONAR PRODUTO            º");
+        printf("\n\t º    [2] - COMPRAR PRODUTO              º");
+        printf("\n\t º    [3] - SAIR                         º");
+        printf("\n\t º                                       º");
+        printf("\n\t-------------------------------------------");
+        printf("\n\t Escolha uma opcao: ");
+        fflush(stdin);
+        scanf(" %c", &opt);
+        if (opt == '1') {
+            addProduto();
+        } else if (opt == '2') {
+            compraProduto();
+        }
+    } while (opt != '3');
+}
+
+void pausa() {
+    printf("\nAPERTE ENTER PARA VOLTAR AO MENU...");
+      fflush(stdin);
+       getchar();
+}
+
+void addProduto() {
+    system("cls");
+       printf("\nNOME DO PRODUTO: ");
+       scanf("%s", p[count].nomeProduto);
+
+    printf("\nPRECO: ");
+      scanf("%f", &p[count].preco);
+
+    printf("\nQUANTIDADE: ");
+      scanf("%d", &p[count].qtdProduto);
+
+    p[count].numProd = count + 1;
+       count++;
+     printf("\nPRODUTO ADICIONADO COM SUCESSO!");
+pausa();
+}
+
+void compraProduto() {
+    system("cls");
+printf("\nPRODUTOS DISPONIVEIS:\n ");
+    for (int i = 0; i < count; i++) {
+        printf("%d. %s - R$ %.2f - %d unidades\n", p[i].numProd, p[i].nomeProduto, p[i].preco, p[i].qtdProduto);
+    }
+
+    printf("\nINFORME O NUMERO DO PRODUTO DESEJADO: ");
+    int opc;
+    scanf("%d", &opc);
+   for( int i=0; i<count; i++){
+      if (opc == p[i].numProd){
+        if(p[i].qtdProduto >0){
+          p[i].qtdProduto--;
+         printf("\nCOMPRA REALIZADA COM SUCESSO");
+    }else {
+     printf("\nPRODUTO FORA DE ESTOUQUE.");
+         }
+      }
+   }
+ pausa();
+}
